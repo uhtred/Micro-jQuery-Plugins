@@ -10,32 +10,40 @@
  *
  * Author: Daniel Ribeiro França
  */
-(function( $ ){
 
-  $.fn.phoneMaskBr = function() {
-      
-      var self , raw, phone, value, phoneWithMask ;
-      
-      $(document.body)
-        .on('keyup', '.phonemask', applyPhoneMask ) ;      
-      
-      function applyPhoneMask(){
-        value = $(this).val();
-        raw = value.replace(/\D/g, '');
-  
-        phoneWithMask = raw.replace(/^\d{2}/, function($1){ return '('+$1+')'; });
-        if(raw.length > 6 && raw.length < 11 ) {
-          phoneWithMask = phoneWithMask.replace(/^.{8}/, function($1){ return $1+'-';});
-        } else {
-          phoneWithMask = phoneWithMask.replace(/^.{9}/, function($1){ return $1+'-';});  
+(function($) {
+
+    "use strict";
+
+    $.fn.phoneMaskBr = function() {
+
+        var rawValue,
+            phoneWithMask,
+            rNormalMask = /^(\d{2})(\d{0,4})(\d{0,4})?(.*)/,
+            rSPMask = /^(\d{2})(\d{5})(\d{4})(.*)/,
+            apliedRegex = rNormalMask;
+
+        $(document.body).on('keyup', '.phoneMaskBr', applyPhoneMask);
+
+        function applyPhoneMask(e) {
+            if( e.which === 8 ) return true; // Backspace escape
+            
+            rawValue = $(this).val().replace(/\D/g, ''); // Just numbers
+            
+            if( rawValue.length === 11 && rawValue.substr(0,2) === '11' ) { // São Paulo rules
+                apliedRegex = rSPMask;
+            }
+
+            phoneWithMask = rawValue.replace(apliedRegex, function(match, ddd, prefix, sufix, trash) {
+                return '(' + ddd + ')' + prefix + (sufix ? '-' + sufix : '');
+            });
+
+            $(this).val(phoneWithMask);
         }
-        
-        $(this).val( phoneWithMask.substr(0,14) );
-      }
-      
-      return this.each(function(){
-        $(this).addClass('phonemask');
-      });
-  };
-  
-})( jQuery );
+
+        return this.each(function() {
+            $(this).addClass('phoneMaskBr');
+        });
+    };
+
+})(jQuery);
