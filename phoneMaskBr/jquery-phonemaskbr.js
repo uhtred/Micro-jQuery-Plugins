@@ -21,7 +21,7 @@
             phoneWithMask,
             rNormalMask = /^(\d{2})(\d{0,4})(\d{0,4})?(.*)/,
             rSPMask = /^(\d{2})(\d{5})(\d{4})(.*)/,
-            apliedRegex = rNormalMask;
+            appliedRegex = rNormalMask;
 
         $(document.body).on('keyup', '.phoneMaskBr', applyPhoneMask);
 
