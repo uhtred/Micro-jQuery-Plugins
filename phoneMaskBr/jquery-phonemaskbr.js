@@ -34,7 +34,7 @@
                 apliedRegex = rSPMask;
             }
 
-            phoneWithMask = rawValue.replace(apliedRegex, function(match, ddd, prefix, sufix, trash) {
+            phoneWithMask = rawValue.replace(appliedRegex, function(match, ddd, prefix, sufix, trash) {
                 return '(' + ddd + ')' + prefix + (sufix ? '-' + sufix : '');
             });
 
