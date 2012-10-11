@@ -31,7 +31,7 @@
             rawValue = $(this).val().replace(/\D/g, ''); // Just numbers
             
             if( rawValue.length === 11 && rawValue.substr(0,2) === '11' ) { // São Paulo rules
-                apliedRegex = rSPMask;
+                appliedRegex = rSPMask;
             }
 
             phoneWithMask = rawValue.replace(appliedRegex, function(match, ddd, prefix, sufix, trash) {
