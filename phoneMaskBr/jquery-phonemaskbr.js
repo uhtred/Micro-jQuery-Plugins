@@ -16,34 +16,31 @@
     "use strict";
 
     $.fn.phoneMaskBr = function() {
+        
+        var value = '';
 
-        var rawValue,
-            phoneWithMask,
-            rNormalMask = /^(\d{2})(\d{0,4})(\d{0,4})?(.*)/,
-            rSPMask = /^(\d{2})(\d{5})(\d{4})(.*)/,
-            appliedRegex = rNormalMask;
+        $( document.body ).on( 'keyup', '.phoneMaskBr', function(){
+            applyPhoneMask( $( this ) );
+        });
 
-        $(document.body).on('keyup', '.phoneMaskBr', applyPhoneMask);
-
-        function applyPhoneMask(e) {
-            if( e.which === 8 ) return true; // Backspace escape
+        function applyPhoneMask( $el ) {
             
-            rawValue = $(this).val().replace(/\D/g, ''); // Just numbers
-            
-            if( rawValue.length === 11 && rawValue.substr(0,2) === '11' ) { // São Paulo rules
-                appliedRegex = rSPMask;
-            }
+            setTimeout(function(){
 
-            phoneWithMask = rawValue.replace(appliedRegex, function(match, ddd, prefix, sufix, trash) {
-                return '(' + ddd + ')' + prefix + (sufix ? '-' + sufix : '');
-            });
+                value = $el.val();
 
-            $(this).val(phoneWithMask);
+                value = value.replace( /\D/g, "" );
+                value = value.replace( /^(\d{2})(\d)/g, "($1) $2" );
+                value = value.replace( /(\d)(\d{4})$/, "$1-$2" );
+
+                $el.val( value );
+
+            }, 1 );
         }
 
         return this.each(function() {
-            $(this).addClass('phoneMaskBr');
+            $( this ).addClass( 'phoneMaskBr' );
         });
     };
 
-})(jQuery);
+})( jQuery );
